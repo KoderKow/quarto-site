@@ -8,11 +8,16 @@ This is a list if my public open source work. I enjoy being able to build and co
 
 ## R packages
 
--   [kaggler](https://github.com/KoderKow/kaggler)
+-   [aocr](https://koderkow.github.io/aocr/)
 
--   [kowr](https://github.com/KoderKow/kowr)
+```{=html}
+<!-- -->
+```
+-   [kaggler](https://koderkow.github.io/kaggler/)
 
--   [twitchr](https://github.com/KoderKow/twitchr)
+-   [kowr](https://koderkow.github.io/kowr/)
+
+-   [twitchr](https://koderkow.github.io/twitchr/)
 
 ## Shiny Apps
 
