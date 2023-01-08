@@ -1,0 +1,41 @@
+project:
+  type: website
+
+website:
+  title: ""
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: docs/projects/index.qmd
+        text: Projects
+    right:
+      - icon: twitter
+        href: https://twitter.com/koderkow
+        aria-label: Twitter
+      - icon: github
+        href: https://github.com/koderkow
+        aria-label: GitHub
+      - icon: linkedin
+        href: https://www.linkedin.com/in/kylewharris
+        aria-label: LinkedIn
+  page-footer:
+    right:
+      - icon: github
+        href: https://github.com/koderkow
+      - icon: twitter
+        href: https://twitter.com/koderkow
+      - icon: linkedin
+        href: https://www.linkedin.com/in/kylewharris
+
+format:
+  html:
+    theme:
+      light: [yeti, custom.scss]
+    css: styles.css
+    toc: true
+
+editor: visual
+
+execute:
+  freeze: auto

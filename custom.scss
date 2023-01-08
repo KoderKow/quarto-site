@@ -1,0 +1,17 @@
+/*-- scss:defaults --*/
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code');
+
+* { font-family: Fira Code !important;}
+
+$white: #ffffff;
+
+$light: #fdf7d7;
+$dark: #1c1224;
+$primary: #ff6961;
+$secondary: #61a8ff;
+$info: #5dce74;
+$success: #6fc500;
+$warning: #ffca8c;
+$danger: #ff0f6d;
+
+$link-color: $secondary;

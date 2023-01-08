@@ -1,0 +1,49 @@
+---
+title: "Projects"
+---
+
+This is a list if my public open source work. I enjoy being able to build and contribute when I have time outside of family and work!
+
+# Personal projects
+
+## R packages
+
+-   [kaggler](https://github.com/KoderKow/kaggler)
+
+-   [kowr](https://github.com/KoderKow/kowr)
+
+-   [twitchr](https://github.com/KoderKow/twitchr)
+
+## Shiny Apps
+
+-   [dinnR](https://github.com/KoderKow/dinnR)
+
+    -   [3rd annual Shiny Contest](https://blog.rstudio.com/2021/06/24/winners-of-the-3rd-annual-shiny-contest/) grand prize winner
+
+-   [Wordle solver](https://github.com/KoderKow/wordle)
+
+# Open source contribution
+
+## Code
+
+-   [AzureStor](https://github.com/Azure/AzureStor/pull/86)
+
+-   [golem](https://github.com/ThinkR-open/golem/pull/478)
+
+-   [rdew](https://github.com/aftonsteps/rdew/pull/1)
+
+-   [shinydashboardPlus](https://github.com/RinteRface/shinydashboardPlus/pull/82)
+
+-   [tidylog](https://github.com/elbersb/tidylog/pull/13)
+
+-   [togglr](https://github.com/ThinkR-open/togglr/pull/25)
+
+    ## Improving Documentation
+
+-   [httr2](https://github.com/r-lib/httr2/pull/89)
+
+-   [ISLR tidymodel labs](https://github.com/EmilHvitfeldt/ISLR-tidymodels-labs/pull/31)
+
+-   [R Packages Book](https://github.com/hadley/r-pkgs/pull/824)
+
+-   [usethis](https://github.com/r-lib/usethis/pull/1227)

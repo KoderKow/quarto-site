@@ -1,0 +1,38 @@
+---
+title: "👋 Hello, I'm Kyle! ![](its-me.jpeg){.poligon fig-align='right'}"
+---
+
+## About me
+
+My name is Kyle and I do data science stuff at [CLA](https://www.claconnect.com/)
+
+I am an R developer that focuses on:
+
+-   package development
+-   machine learning
+-   shiny
+
+Hobbies include
+
+-   video games
+-   watching some sweet anime
+
+Loves include
+
+-   Lexi
+-   Star
+-   Zordon 💖
+
+## 😄 Pronouns
+
+-   [https://en.pronouns.page/\@koderkow](https://en.pronouns.page/@koderkow){.uri}
+
+## ⚡ Fun facts
+
+-   My partner and I won the grand prize for the [3rd annual Shiny Contest](https://blog.rstudio.com/2021/06/24/winners-of-the-3rd-annual-shiny-contest/) with our [dinnR app](https://koderkow.shinyapps.io/dinnR/) 🥇
+-   I helped create and cook the [Guiness World Record's largest calzone](https://www.guinnessworldrecords.com/world-records/largest-calzone#:~:text=The%20largest%20calzone%20weighs%2096.37,and%20sauce%20inside%20the%20dough.)
+
+## 🌱 I'm currently learning
+
+-   Adv. R Package Development
+-   Becoming one with R

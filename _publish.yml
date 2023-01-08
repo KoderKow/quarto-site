@@ -1,0 +1,7 @@
+- source: project
+  quarto-pub:
+    - id: ad794901-cdfd-4dea-8800-35208a2aead2
+      url: 'https://quartopub.com/sites/kow/personal-site'
+  netlify:
+    - id: 76e66b74-7c19-4dd7-b3eb-bec6a9893c31
+      url: 'https://koderkow.com'
