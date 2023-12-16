@@ -12,6 +12,10 @@ execute:
   warning: false
 ---
 
+# Intro
+
+Day 1 of AOC 2023!
+
 ```{r}
 #| message: false
 library(aocr)
@@ -25,16 +29,10 @@ d_init <- aoc_get_data_as_tibble(2023, 1)
 
 ```{r}
 head(d_init)
-
-string <- "abc 123 def 456"
-first_number <- gsub(".*?(\\d+).*", "\\1", string)
-
-string <- "abc 123 def 456"
-last_number <- gsub(".*?(\\d+)$", "\\1", string)
-
-library(dplyr)
+```
 
 
+```{r}
 d <-
   d_init |>
   mutate(
@@ -43,6 +41,11 @@ d <-
     combo = as.numeric(paste0(first_digit, last_digit))
   )
 
+head(d)
+```
+
+
+```{r}
 sum(d$combo)
 ```
 
@@ -55,29 +58,56 @@ Had to get help from twitter on this one :)
 ```{r}
 num <- c("one", "two", "three", "four", "five", "six", "seven", "eight", "nine")
 
-d_init |>
+d2 <- 
+  d_init |>
   extract(
     col = col_1,
-    into = "first",
+    into = "first_init",
     regex = "(\\d|one|two|three|four|five|six|seven|eight|nine)",
     remove = FALSE
-    ) |>
+  ) |>
   extract(
     col = col_1,
-    into = "last",
+    into = "last_init",
     regex = ".*(\\d|one|two|three|four|five|six|seven|eight|nine)",
     remove = FALSE
   ) |>
-  transmute(
-    first = coalesce(as.numeric(first), match(first, num)),
-    last = coalesce(as.numeric(last), match(last, num)),
+  mutate(
+    first = coalesce(
+      as.numeric(first_init), 
+      match(first_init, num)
+    ),
+    last = coalesce(
+      as.numeric(last_init),
+      match(last_init, num)
+    ),
     combo = as.numeric(paste0(first, last))
-  ) |>
-  summarize(
-    x = sum(combo)
+  ) %>% 
+  select(
+    col_1,
+    first_init,
+    last_init,
+    first,
+    last,
+    combo
   )
+
+head(d2)
+```
+
+```{r}
+sum(d2$combo)
 ```
 
 # Sources
 
 - Header image from [https://www.smarty.com/img/1600-900-Advent-of-Code-2023.png](https://www.smarty.com/img/1600-900-Advent-of-Code-2023.png)
+
+# Session info
+
+```{r, echo=FALSE}
+library(details)
+
+sessioninfo::session_info() %>%
+  details::details(summary = 'Click for session info')
+```
