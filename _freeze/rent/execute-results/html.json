@@ -1,0 +1,17 @@
+{
+  "hash": "9805b8b3e75fef536095594080450569",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Rent\"\nformat: dashboard\nexecute: \n  echo: false\n  warning: false\n---\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n::: {.cell-output-display}\n\n\n|      ym| year|month     |  lin_pay|   we_pay|   total|\n|-------:|----:|:---------|--------:|--------:|-------:|\n| 2023.09| 2023|September | 596.4100| 2520.820| 3117.23|\n| 2023.10| 2023|October   | 622.0633| 2572.127| 3194.19|\n| 2023.11| 2023|November  | 590.5633| 2509.127| 3099.69|\n:::\n:::\n\n::: {.cell}\n::: {.cell-output-display}\n![](rent_files/figure-html/unnamed-chunk-1-1.png){width=768}\n:::\n:::\n",
+    "supporting": [
+      "rent_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

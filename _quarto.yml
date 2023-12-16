@@ -9,6 +9,8 @@ website:
         text: Home
       - href: docs/projects/index.qmd
         text: Projects
+      - href: posts.qmd
+        text: Blog
     right:
       - icon: twitter
         href: https://twitter.com/koderkow

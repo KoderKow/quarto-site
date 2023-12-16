@@ -1,0 +1,79 @@
+---
+title: "Advent of Code: 2023 Day 1"
+description: ""
+author:
+  - name: Kyle Harris
+    url: https://koderkow.comw/
+date: 2023-12-14
+categories: [R, Advent of Code] # self-defined categories
+image: https://www.smarty.com/img/1600-900-Advent-of-Code-2023.png
+draft: false # setting this to `true` will prevent your post from appearing on your listing page until you're ready!
+execute:
+  warning: false
+---
+
+```{r}
+#| message: false
+library(aocr)
+library(tidyverse)
+library(printr)
+
+d_init <- aoc_get_data_as_tibble(2023, 1)
+```
+
+# Part 1
+
+```{r}
+head(d_init)
+
+string <- "abc 123 def 456"
+first_number <- gsub(".*?(\\d+).*", "\\1", string)
+
+string <- "abc 123 def 456"
+last_number <- gsub(".*?(\\d+)$", "\\1", string)
+
+library(dplyr)
+
+
+d <-
+  d_init |>
+  mutate(
+    first_digit = gsub("\\D*(\\d).*", "\\1", col_1),
+    last_digit = gsub(".*?(\\d)\\D*$", "\\1", col_1),
+    combo = as.numeric(paste0(first_digit, last_digit))
+  )
+
+sum(d$combo)
+```
+
+# Part 2
+
+Had to get help from twitter on this one :)
+
+{{< tweet drob 1730460184563069333 >}}
+
+```{r}
+num <- c("one", "two", "three", "four", "five", "six", "seven", "eight", "nine")
+
+d_init |>
+  extract(
+    col = col_1,
+    into = "first",
+    regex = "(\\d|one|two|three|four|five|six|seven|eight|nine)",
+    remove = FALSE
+    ) |>
+  extract(
+    col = col_1,
+    into = "last",
+    regex = ".*(\\d|one|two|three|four|five|six|seven|eight|nine)",
+    remove = FALSE
+  ) |>
+  transmute(
+    first = coalesce(as.numeric(first), match(first, num)),
+    last = coalesce(as.numeric(last), match(last, num)),
+    combo = as.numeric(paste0(first, last))
+  ) |>
+  summarize(
+    x = sum(combo)
+  )
+```

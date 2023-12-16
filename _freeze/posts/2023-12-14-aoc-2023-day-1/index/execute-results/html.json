@@ -1,0 +1,15 @@
+{
+  "hash": "e77f87f8f3ad98c6dfab4a2cd841cc0c",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Advent of Code: 2023 Day 1\"\ndescription: \"\"\nauthor:\n  - name: Kyle Harris\n    url: https://koderkow.comw/\ndate: 2023-12-14\ncategories: [R, Advent of Code] # self-defined categories\nimage: https://www.smarty.com/img/1600-900-Advent-of-Code-2023.png\ndraft: false # setting this to `true` will prevent your post from appearing on your listing page until you're ready!\nexecute:\n  warning: false\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(aocr)\nlibrary(tidyverse)\nlibrary(printr)\n\nd_init <- aoc_get_data_as_tibble(2023, 1)\n```\n:::\n\n\n# Part 1\n\n\n::: {.cell}\n\n```{.r .cell-code}\nhead(d_init)\n```\n\n::: {.cell-output-display}\n\n\n|col_1                                     |\n|:-----------------------------------------|\n|five3onelxjninenine45                     |\n|six9mnfjmtsf2kfmznkxntninesevenrpmfjfpgsk |\n|9vkrmbpnine5two5cbktwo6                   |\n|one1bdr6                                  |\n|ksvctznmffourtwovbb9four5five             |\n|6nfhcklxlkg9jbqmqrrxmhn9two6              |\n:::\n\n```{.r .cell-code}\nstring <- \"abc 123 def 456\"\nfirst_number <- gsub(\".*?(\\\\d+).*\", \"\\\\1\", string)\n\nstring <- \"abc 123 def 456\"\nlast_number <- gsub(\".*?(\\\\d+)$\", \"\\\\1\", string)\n\nlibrary(dplyr)\n\n\nd <-\n  d_init |>\n  mutate(\n    first_digit = gsub(\"\\\\D*(\\\\d).*\", \"\\\\1\", col_1),\n    last_digit = gsub(\".*?(\\\\d)\\\\D*$\", \"\\\\1\", col_1),\n    combo = as.numeric(paste0(first_digit, last_digit))\n  )\n\nsum(d$combo)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 55123\n```\n\n\n:::\n:::\n\n\n# Part 2\n\nHad to get help from twitter on this one :)\n\n\n{{< tweet drob 1730460184563069333 >}}\n\n\n::: {.cell}\n\n```{.r .cell-code}\nnum <- c(\"one\", \"two\", \"three\", \"four\", \"five\", \"six\", \"seven\", \"eight\", \"nine\")\n\nd_init |>\n  extract(\n    col = col_1,\n    into = \"first\",\n    regex = \"(\\\\d|one|two|three|four|five|six|seven|eight|nine)\",\n    remove = FALSE\n    ) |>\n  extract(\n    col = col_1,\n    into = \"last\",\n    regex = \".*(\\\\d|one|two|three|four|five|six|seven|eight|nine)\",\n    remove = FALSE\n  ) |>\n  transmute(\n    first = coalesce(as.numeric(first), match(first, num)),\n    last = coalesce(as.numeric(last), match(last, num)),\n    combo = as.numeric(paste0(first, last))\n  ) |>\n  summarize(\n    x = sum(combo)\n  )\n```\n\n::: {.cell-output-display}\n\n\n|     x|\n|-----:|\n| 55260|\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
