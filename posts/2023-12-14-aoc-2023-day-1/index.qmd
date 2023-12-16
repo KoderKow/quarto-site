@@ -77,3 +77,7 @@ d_init |>
     x = sum(combo)
   )
 ```
+
+# Sources
+
+- Header image from [https://www.smarty.com/img/1600-900-Advent-of-Code-2023.png](https://www.smarty.com/img/1600-900-Advent-of-Code-2023.png)
