@@ -10,12 +10,13 @@ I am an R developer that focuses on:
 
 -   package development
 -   machine learning
--   shiny
 
 Hobbies include
 
 -   video games
 -   watching some sweet anime
+-   weight lifting
+-   sous vide cooking
 
 Loves include
 
@@ -34,5 +35,5 @@ Loves include
 
 ## 🌱 I'm currently learning
 
--   Adv. R Package Development
+-   Linear programming
 -   Becoming one with R
