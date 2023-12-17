@@ -1,0 +1,260 @@
+---
+title: "Advent of Code: 2023 Day 2"
+description: ""
+author:
+  - name: Kyle Harris
+    url: https://koderkow.com/
+date: 2023-12-13
+categories: [R, Advent of Code 2023] # self-defined categories
+image: https://www.smarty.com/img/1600-900-Advent-of-Code-2023.png
+draft: false # setting this to `true` will prevent your post from appearing on your listing page until you're ready!
+execute:
+  warning: false
+---
+
+# Intro
+
+[Day 2 of AOC 2023](https://adventofcode.com/2023/day/2)
+
+```{r}
+#| message: false
+library(aocr)
+library(tidyverse)
+library(printr)
+
+d_init <- aoc_get_data_as_tibble(2023, 2)
+```
+
+# Part 1
+
+## Play-by-play
+
+```{r}
+head(d_init)
+```
+
+- Lets use the first row/game as an example. After this is figured out we can wrap it into a function to execute against each row.
+
+```{r}
+game <- d_init[[1]][1]
+
+game
+```
+
+- Separate the game text
+
+```{r}
+split_init <- str_split(unlist(game), ": ")[[1]]
+
+split_init
+```
+
+- Store the game ID
+
+```{r}
+game_id <-
+  split_init[1] %>%
+  str_remove("Game ") %>%
+  as.numeric()
+
+game_id
+```
+
+- Use `str_split()` on the second object to separate into sets
+- Clear out extra white spaces with `str_squish()`
+- Transform it back into a tibble
+- Add a **set_id** to keep track of what set the values are from for future aggregation
+
+```{r}
+d_1 <-
+  str_split(split_init[2], ";")[[1]] %>%
+  str_squish() %>%
+  as_tibble() %>%
+  mutate(
+    set_id = row_number()
+  )
+
+d_1
+```
+
+- Turn the value column into separate rows based on the comma delim
+
+```{r}
+d_2 <- 
+  d_1 %>% 
+  separate_longer_delim(value, delim = ", ")
+
+d_2
+```
+
+- Separate the number and color from the **value** column
+- Use `convert = TRUE` to auto-coerce data types
+
+```{r}
+d_3 <- 
+  d_2 %>% 
+  separate(
+    col = value,
+    into = c("n", "color"),
+    sep = " ",
+    convert = TRUE
+  ) 
+
+d_3
+```
+
+- Group by set and color to get the total counts
+- The summarize is likely not needed, but I added it just incase there was more than one color shown in a set
+- Get the result by checking to see if the color counts are less than or equal to the amounts given in the problem
+
+```{r}
+d_4 <- 
+  d_3 %>% 
+  group_by(set_id, color) %>%
+  summarize(
+    n = sum(n),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    result = case_when(
+      color == "red" & n <= 12 ~ TRUE,
+      color == "green" & n <= 13 ~ TRUE,
+      color == "blue" & n <= 14 ~ TRUE,
+      TRUE ~ FALSE
+    )
+  )
+
+d_4
+```
+
+- If all results are `TRUE`, return the game_id. This is needed to summarize for the final answer
+- If not all results are not `TRUE`, return a 0. This will represent a game ID we want to ignore
+
+```{r}
+if (all(d_4$result)) {
+  result <- game_id
+} else {
+  result <- 0
+}
+
+result
+```
+
+## Functionize it
+```{r}
+day_2_part_1 <- function(game) {
+  split_init <- str_split(unlist(game), ": ")[[1]]
+  
+  game_id <- split_init[1] %>%
+    str_remove("Game ") %>%
+    as.numeric()
+  
+  d <-
+    str_split(split_init[2], ";")[[1]] %>%
+    str_squish() %>%
+    as_tibble() %>%
+    mutate(
+      set_id = row_number()
+    ) %>%
+    separate_longer_delim(value, delim = ", ") %>%
+    separate(
+      col = value,
+      into = c("n", "color"),
+      sep = " ",
+      convert = TRUE
+    ) %>%
+    group_by(set_id, color) %>%
+    summarize(
+      n = sum(n),
+      .groups = "drop"
+    ) %>%
+    mutate(
+      result = case_when(
+        color == "red" & n <= 12 ~ TRUE,
+        color == "green" & n <= 13 ~ TRUE,
+        color == "blue" & n <= 14 ~ TRUE,
+        TRUE ~ FALSE
+      )
+    )
+  
+  if (all(d$result)) {
+    result <- game_id
+  } else {
+    result <- 0
+  }
+  
+  return(result)
+}
+```
+
+```{r}
+v_res <- 
+  d_init %>%
+  group_split(row_id = row_number()) %>%
+  map_int(day_2_part_1)
+
+head(v_res)
+```
+
+```{r}
+sum(v_res)
+```
+
+# Part 2
+
+> As you continue your walk, the Elf poses a second question: in each game you played, what is the fewest number of cubes of each color that could have been in the bag to make the game possible?
+
+- For this we will need to look at each game and get the max `n` by color then take the **product**, or they call it power, of the 3 numbers
+- I will modify the `summarize` to take the max n by **color** then use the `prod` function to multiply them together
+
+```{r}
+day_2_part_2 <- function(game) {
+  split_init <- str_split(unlist(game), ": ")[[1]]
+  game_id <- split_init[1] %>%
+    str_remove("Game ") %>%
+    as.numeric()
+  d <-
+    str_split(split_init[2], ";")[[1]] %>%
+    str_squish() %>%
+    as_tibble() %>%
+    mutate(
+      set_id = row_number()
+    ) %>%
+    separate_longer_delim(value, delim = ", ") %>%
+    separate(
+      col = value,
+      into = c("n", "color"),
+      sep = " ",
+      convert = TRUE
+    ) %>%
+    group_by(color) %>%
+    summarize(
+      n = max(n),
+      .groups = "drop"
+    )
+  
+  result <- prod(d$n)
+  
+  return(result)
+}
+```
+
+```{r}
+d_init %>%
+  group_split(set_id = row_number()) %>%
+  map_int(day_2_part_2) %>%
+  sum()
+```
+
+# Sources
+
+- Header image from <https://www.smarty.com/img/1600-900-Advent-of-Code-2023.png>
+
+# Session info
+
+```{r, echo=FALSE}
+library(details)
+
+sessioninfo::session_info() %>%
+  details::details(summary = 'Click for session info')
+```
