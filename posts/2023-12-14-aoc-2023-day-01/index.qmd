@@ -3,9 +3,9 @@ title: "Advent of Code: 2023 Day 1"
 description: ""
 author:
   - name: Kyle Harris
-    url: https://koderkow.comw/
-date: 2023-12-14
-categories: [R, Advent of Code] # self-defined categories
+    url: https://koderkow.com/
+date: 2023-12-11
+categories: [R, Advent of Code 2023] # self-defined categories
 image: https://www.smarty.com/img/1600-900-Advent-of-Code-2023.png
 draft: false # setting this to `true` will prevent your post from appearing on your listing page until you're ready!
 execute:
@@ -14,7 +14,7 @@ execute:
 
 # Intro
 
-Day 1 of AOC 2023!
+[Day 1 of AOC 2023](https://adventofcode.com/2023/day/1)
 
 ```{r}
 #| message: false
@@ -31,6 +31,7 @@ d_init <- aoc_get_data_as_tibble(2023, 1)
 head(d_init)
 ```
 
+Use regex to extract the first and last digit.
 
 ```{r}
 d <-
@@ -43,7 +44,6 @@ d <-
 
 head(d)
 ```
-
 
 ```{r}
 sum(d$combo)
@@ -101,7 +101,7 @@ sum(d2$combo)
 
 # Sources
 
-- Header image from [https://www.smarty.com/img/1600-900-Advent-of-Code-2023.png](https://www.smarty.com/img/1600-900-Advent-of-Code-2023.png)
+-   Header image from <https://www.smarty.com/img/1600-900-Advent-of-Code-2023.png>
 
 # Session info
 
