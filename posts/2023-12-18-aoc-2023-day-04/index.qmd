@@ -1,0 +1,240 @@
+---
+title: "Advent of Code: 2023 Day 4"
+description: ""
+author:
+  - name: Kyle Harris
+    url: https://koderkow.com/
+date: 2023-12-18
+categories: [R, Advent of Code 2023] # self-defined categories
+image: https://www.smarty.com/img/1600-900-Advent-of-Code-2023.png
+draft: true # setting this to `true` will prevent your post from appearing on your listing page until you're ready!
+execute:
+  warning: false
+---
+
+# Intro
+
+[Day 4 of AOC 2023](https://adventofcode.com/2023/day/4)
+
+```{r}
+#| message: false
+library(aocr)
+library(tidyverse)
+library(printr)
+library(tictoc)
+
+d_init <- aoc_get_data_as_tibble(2023, 4)
+
+head(d_init)
+```
+
+# Part 1
+
+- Function for calculating points based on the number of right answers
+
+```{r}
+score <- function(n) {
+  if (n == 0) {
+    return(0)
+  }
+  
+  2^(n - 1)
+}
+```
+
+- Use [separate_wider_delim()](https://tidyr.tidyverse.org/reference/separate_wider_delim.html) to seperate the **card_id** and the **values**
+- Use the same function on **values** to get what I am calling the winning **lottery** numbers and the **numbers** shown on the card
+```{r}
+d <- 
+  d_init %>% 
+  separate_wider_delim(
+    cols = col_1,
+    delim = ": ",
+    names = c("card_id", "values")
+  ) %>% 
+  separate_wider_delim(
+    cols = values,
+    delim = " | ",
+    names = c("lottery", "numbers")
+  )
+
+head(d)
+```
+
+- Use [rowwise()](https://dplyr.tidyverse.org/articles/rowwise.html) to contain the calculations per row
+- Create new columns
+- [str_remove_all()](https://stringr.tidyverse.org/reference/str_remove.html) to help turn the card ID into a numeric
+- Using [row_number()](https://dplyr.tidyverse.org/reference/row_number.html) would have been faster and easier
+- [str_squish()](https://stringr.tidyverse.org/reference/str_trim.html) both **lottery** and **numbers** to clean the data for a clean string split
+- [str_split_1()](https://stringr.tidyverse.org/reference/str_split.html) both columns so that each value is independent. This will allow us to check which numbers are in the lottery numbers
+- Learning moment: I did not know `str_split_1()` was a thing! goodbye `str_split(...)[[1]]` 😎
+- Count the number of matches for **lottery** and **numbers**
+- Use the custom `score()` function from above to get the total points
+
+```{r}
+d_2 <- 
+  d %>% 
+  rowwise() %>% 
+  mutate(
+    card_id = card_id %>% 
+      str_remove_all("Card| ") %>% 
+      as.integer(),
+    lottery = str_squish(lottery),
+    numbers = str_squish(numbers),
+    lottery = map(lottery, str_split_1, pattern = " "),
+    numbers = map(numbers, str_split_1, pattern = " "),
+    matches = sum(lottery %in% numbers),
+    score = score(matches)
+  ) %>% 
+  filter(matches > 0)
+
+d_2
+```
+
+- And the grand total is...
+
+```{r}
+sum(d_2$score)
+```
+
+## Part 2
+
+- Store how many possible cards there are
+
+```{r}
+max_cards <- nrow(d_2)
+
+max_cards
+```
+
+- Function for obtaining how many rows there are per match
+
+```{r}
+row_getter <- function(card_id, card_check) {
+  if (card_check == 0) {
+    return(0)
+  }
+  
+  (card_id + 1):(card_id + card_check)
+}
+```
+
+- Compute how many cards are won based off what is initially there
+
+```{r}
+d_3 <- 
+  d_2 %>% 
+  select(-score) %>% 
+  rowwise() %>% 
+  mutate(
+    card_check = ifelse(
+      test = (card_id + matches) > max_cards,
+      yes = max_cards - card_id,
+      no = matches
+    ),
+    card_id_won = map2(card_id, card_check, row_getter)
+  ) %>% 
+  filter(matches > 0)
+
+head(d_3)
+
+head(d_3$card_id_won)
+```
+
+- Unnest the data so that there is one row per original card to new card combination
+
+```{r}
+d_4 <- 
+  d_3 %>% 
+  select(card_id, card_id_won) %>% 
+  unnest_longer(card_id_won)
+
+head(d_4)
+```
+
+- Add a round for debugging
+
+```{r}
+d_5 <- 
+  d_4 %>% 
+  mutate(round = 1) %>% 
+  relocate(round)
+```
+
+- Setup while loop variables
+
+```{r}
+l_res <- list(d_5)
+
+i <- 2
+```
+
+- Per match, repeat the steps above
+- Repeat these steps until there are no more results
+
+```{r}
+tic()
+while(TRUE) {
+  # cat("- Round", i, "\n")
+  
+  d_5 <- 
+    d_5 %>% 
+    select(card_id = card_id_won) %>% 
+    filter(card_id > 0) %>% 
+    mutate(round = i) %>% 
+    arrange(card_id) %>% 
+    left_join(
+      y = d_2 %>% 
+        select(card_id, matches),
+      by = "card_id"
+    ) %>% 
+    filter(matches > 0 | !is.na(matches)) %>% 
+    rowwise() %>% 
+    mutate(
+      # new_cards = 1 + matches,
+      card_check = ifelse(
+        test = (card_id + matches) > max_cards,
+        yes = max_cards - card_id,
+        no = matches
+      ),
+      card_id_won = map2(card_id, card_check, row_getter)
+    ) %>% 
+    filter(matches > 0) %>% 
+    select(card_id, card_id_won) %>% 
+    unnest_longer(card_id_won)
+  
+  if (nrow(d_5) == 0) {
+    return(FALSE)
+  }
+  
+  l_res[[i]] <- d_5
+  
+  i <- i + 1
+}
+toc()
+```
+
+- Look at the amount of rows combined with the original amount of results
+
+```{r}
+nrow(bind_rows(l_res)) + max_cards
+```
+
+# Takeaways
+
+- `str_split_1()` is a thing
+- My part 2 solution works, but it is slow
+    - I need to work on my vectorized solutions that involve recursion
+
+# Sources
+
+- Header image from <https://www.smarty.com/img/1600-900-Advent-of-Code-2023.png>
+
+# Session info
+
+```{r, echo=FALSE}
+library(details)
+
+sessioninfo::session_info() %>%
+  details::details(summary = 'Click for session info')
+```
